@@ -1,0 +1,19 @@
+{
+  "name": "gbpusd-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite",
+    "lint": "eslint . --ext .jsx,.js"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "vite": "4.4.9"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0"
+  }
+}

@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: gbpusd
+      POSTGRES_USER: gbpusd_user
+      POSTGRES_PASSWORD: change_me
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - gbpusd-net
+
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    environment:
+      - DATABASE_URL=postgres://gbpusd_user:change_me@postgres:5432/gbpusd
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend/logs:/app/logs
+    networks:
+      - gbpusd-net
+
+  python_engine:
+    build: ./python_engine
+    env_file: ./backend/.env
+    depends_on:
+      - backend
+      - postgres
+    networks:
+      - gbpusd-net
+
+  frontend:
+    build: ./frontend
+    environment:
+      - VITE_BACKEND_URL=https://localhost
+    networks:
+      - gbpusd-net
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - gbpusd-net
+
+volumes:
+  pgdata:
+
+networks:
+  gbpusd-net:
+    driver: bridge

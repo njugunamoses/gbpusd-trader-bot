@@ -1,0 +1,6 @@
+pandas==2.2.3
+pandas_ta==0.3.0b0
+requests==2.31.0
+numpy==1.26.4
+python-dotenv==1.0.0
+websocket-client==1.6.3
