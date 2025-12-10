@@ -1,0 +1,1 @@
+# gbpusd-trader-bot
